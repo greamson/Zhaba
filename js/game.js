@@ -22,7 +22,7 @@ var flyn = 1;
 var score = 0;
 var lost = 0;
 var flag = 0;
-
+alert(navigator.userAgent);
 flyes[0] = {
     x : 0,
     y : 50 + getRandomInt(50),
