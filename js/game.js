@@ -22,7 +22,7 @@ var flyn = 1;
 var score = 0;
 var lost = 0;
 var flag = 0;
-alert(navigator.userAgent);
+
 flyes[0] = {
     x : 0,
     y : 50 + getRandomInt(50),
@@ -57,6 +57,12 @@ document.addEventListener('keydown', function(event) {
         frogPosX -= 5;
     else if(event.code == 'KeyD' && interval_id == null)
         frogPosX += 5;
+});
+
+document.addEventListener('touchstart', function(event)
+{
+    shoot()
+
 });
 
 
