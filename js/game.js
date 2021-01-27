@@ -12,34 +12,48 @@ tonguehead.src = "img/tongue.png";
 tonguebody.src = "img/tongue1.png";
 fly.src = "img/fly.png"
 bg.src = "img/bg.png";
-var frogPosX = 231;
-var frogPosY = 230;
+var frogPosX = window.innerWidth/2;
+var frogPosY = window.innerHeight * 8/10;
 var tongues = [];
 var n = 1;
-var speed = 2;
 var flyes = [];
 var flyn = 1;
 var score = 0;
 var lost = 0;
 var flag = 0;
+var dx = window.innerWidth/506;
+var dy = window.innerHeight/288;
+var speed = dx * 1;
 
 flyes[0] = {
     x : 0,
-    y : 50 + getRandomInt(50),
+    y : 50 * dy + getRandomInt(50*dy),
     got : 0
 }
 
 tongues[0] = {
-    x : frogPosX + 22,
-    y : frogPosY + 20
+    x : frogPosX + 22 * dx,
+    y : frogPosY + 20 * dy
 }
+
+
+
+window.addEventListener('resize', resizeCanvas, false);
+
+function resizeCanvas() {
+    cvs.width = window.innerWidth;
+    cvs.height = window.innerHeight;
+    draw();
+}
+resizeCanvas();
+
 
 function AddFly()
 {
     flyn++;
     flyes.push({
         x : 0,
-        y : 50 + getRandomInt(50),
+        y : 50 * dy + getRandomInt(50 * dy),
         got : 0
     });
 }
@@ -54,9 +68,9 @@ document.addEventListener('keydown', function(event) {
         shoot()
     }
     else if(event.code == 'KeyA' && interval_id == null)
-        frogPosX -= 5;
+        frogPosX -= 5 * dx;
     else if(event.code == 'KeyD' && interval_id == null)
-        frogPosX += 5;
+        frogPosX += 5 * dx;
 });
 
 document.addEventListener('touchstart', function(event)
@@ -81,8 +95,8 @@ function tonguepush()
     {
         n++;
         tongues.push({
-            x: frogPosX + 22,
-            y: tongues[tongues.length - 1].y - 1
+            x: frogPosX + 22 * dx,
+            y: tongues[tongues.length - 1].y - 1 * dy
         });
     }
     else {
@@ -114,22 +128,22 @@ function gotit(i)
 
 function draw()
 {
-    ctx.drawImage(bg, 0, 0);
-    ctx.drawImage(frog, frogPosX, frogPosY);
+    ctx.drawImage(bg, 0, 0, window.innerWidth, window.innerHeight);
+    ctx.drawImage(frog, frogPosX, frogPosY, 45 * dx, 45 * dy);
 
     for(let i = 1; i < tongues.length-1; i++)
     {
-        ctx.drawImage(tonguebody, tongues[i].x, tongues[i].y)
+        ctx.drawImage(tonguebody, tongues[i].x, tongues[i].y, dx * 2, dy)
     }
     if(n>2)
-        ctx.drawImage(tonguehead, tongues[tongues.length-1].x-1, tongues[tongues.length-1].y-7)
+        ctx.drawImage(tonguehead, tongues[tongues.length-1].x-1*dx, tongues[tongues.length-1].y-7*dy, 4*dx, 8*dy)
     for(let i = 0; i < flyn; i++)
     {
         if(flyes[i].got == 0)
-            ctx.drawImage(fly, flyes[i].x, flyes[i].y)
+            ctx.drawImage(fly, flyes[i].x, flyes[i].y, 20*dx, 20*dy)
         flyes[i].x += speed;
-        if(tongues[tongues.length-1].x-2 > flyes[i].x && tongues[tongues.length-1].x+2 < flyes[i].x + 20 && tongues[tongues.length-1].y-4 > flyes[i].y
-            && tongues[tongues.length-1].y+4 < flyes[i].y + 20 && flyes[i].got == 0)
+        if(tongues[tongues.length-1].x-2*dx > flyes[i].x && tongues[tongues.length-1].x+2*dx < flyes[i].x + 20*dx && tongues[tongues.length-1].y-4*dy > flyes[i].y
+            && tongues[tongues.length-1].y+4*dy < flyes[i].y + 20*dy && flyes[i].got == 0)
         {
             gotit(i);
         }
@@ -137,16 +151,16 @@ function draw()
 
 
     ctx.fillStyle = "#000";
-    ctx.font = "20px Verdana";
-    ctx.fillText("Счет: " + score, 172, 30)
+    ctx.font = dx*20+"px Verdana";
+    ctx.fillText("Счет: " + score, 172*dx, 30*dx)
 
     if(lost == 3) {
         alert("Игра окончена, результат: " + score);
         lost = 0;
         score = 0;
-        speed = 2;
-        for(var i = 1; i < flyes.length - 1; i ++)
-            flyes.pop();
+        speed = 1*dx;
+       // for(var i = 1; i < flyes.length - 1; i ++)
+           // flyes.pop();
     }
 
     requestAnimationFrame(draw);
